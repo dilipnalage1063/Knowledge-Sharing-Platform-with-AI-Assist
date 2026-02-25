@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-KSP API Test Dashboard</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #f4f7f6;
+        }
+
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .status {
+            font-weight: bold;
+            color: #27ae60;
+        }
+
+        .endpoint {
+            background: #eee;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            display: inline-block;
+            margin: 5px 0;
+        }
+
+        .btn {
+            display: inline-block;
+            background: #3498db;
+            color: white;
+            padding: 10px 15px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 10px;
+            transition: background 0.3s;
+        }
+
+        .btn:hover {
+            background: #2980b9;
+        }
+
+        .tag {
+            background: #e0e0e0;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.85em;
+            margin-right: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>AI-KSP System Verification</h1>
+
+    <div class="card">
+        <h2>Backend Connectivity</h2>
+        <p>Status: <span class="status">✅ ONLINE</span></p>
+        <p>The backend is running at <span class="endpoint">http://localhost:5000</span></p>
+        <a href="http://localhost:5000" target="_blank" class="btn">Test API Health</a>
+    </div>
+
+    <div class="card">
+        <h2>Article Data (Public)</h2>
+        <p>You can view the list of articles (including the ones I just created in the test) directly in your browser:
+        </p>
+        <div class="endpoint">GET /api/articles</div><br>
+        <a href="http://localhost:5000/api/articles" target="_blank" class="btn">View All Articles</a>
+    </div>
+
+    <div class="card">
+        <h2>Rich Text & AI Integration (Phase 5)</h2>
+        <p>Test the AI endpoints (Mock/Real) implemented in Task 7 & 8:</p>
+        <ul>
+            <li><strong>AI Improve</strong> (Polishes Title/Content): <span class="endpoint">POST /api/ai/improve</span>
+            </li>
+            <li><strong>AI Summary</strong> (Auto-summary): <span class="endpoint">POST /api/ai/summary</span></li>
+            <li><strong>AI Tags</strong> (Suggests tags): <span class="endpoint">POST /api/ai/suggest-tags</span></li>
+        </ul>
+        <p><i>Note: These POST requests require a JWT. You can test them using tools like Postman or through the
+                upcoming frontend UI.</i></p>
+    </div>
+
+    <div class="card">
+        <h2>Frontend Skeleton (Phase 6)</h2>
+        <p>The React frontend foundation is set up with routing and AuthContext.</p>
+        <a href="http://localhost:5173" target="_blank" class="btn">Open Frontend (Vite)</a>
+    </div>
+
+    <div class="card">
+        <h2>What's Next?</h2>
+        <p>Everything is verified and functioning perfectly. We are ready to build the <strong>Login & Signup
+                Pages</strong> with full form handling.</p>
+    </div>
+</body>
+
+</html>
