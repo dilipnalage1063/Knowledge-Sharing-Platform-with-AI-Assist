@@ -1,120 +1,88 @@
-# 🏆 NexusAI | KnowledgeHub — AI-Powered Technical Sharing Platform
+# 📄 KnowledgeHub — AI-Powered Knowledge Sharing Platform
 
-[![Project Status: Production Ready](https://img.shields.io/badge/Status-Production--Ready-brightgreen.svg)]()
-[![Tech Stack: MERN + MySQL](https://img.shields.io/badge/Stack-MERN%20%2B%20MySQL-blue.svg)]()
-[![AI Integration: OpenAI](https://img.shields.io/badge/AI-OpenAI--Powered-blueviolet.svg)]()
-
-**NexusAI | KnowledgeHub** is a high-performance, full-stack platform designed for developers and technical teams to share and discover knowledge efficiently. This project showcases a refined executive dark theme, robust authentication, and cutting-edge AI assistance for content creation.
+**KnowledgeHub** is a high-performance, professional article-sharing platform designed for developers. It leverages cutting-edge AI to assist authors in creating, improving, and summarizing technical content. Built with a robust **Node.js/Express** backend and a sleek **React/Vite** frontend, it follows modern architectural patterns for scalability and visual excellence.
 
 ---
 
-## ✨ Key Features & Technical Highlights
+## 🏗️ 1. Approach & Architecture
 
-### 🤖 Intelligent AI Ecosystem
-*   **"Improve with AI" Engine**: Automatically boosts the quality of articles by refining vocabulary, tone, and grammar. It even suggests a "Viral" technical title for maximum engagement.
-*   **Automated Summarization**: Uses NLP to generate concise, indexing-ready summaries for every article, ensuring a clean and scannable Home feed.
-*   **Resilient Design**: Features a seamless fallback mechanism to a high-quality mock service if AI API keys are missing, ensuring 100% uptime.
+### Architecture Overview
+The project follows a modular **Monolithic Service Architecture** with a clear separation of concerns:
+- **Client (Frontend)**: A React-based Single Page Application (SPA) utilizing Vite for lightning-fast development and build cycles.
+- **Server (Backend)**: A Node.js/Express API following the **MVC (Model-View-Controller)** pattern.
+- **Database**: Relational MySQL database with a normalized schema to handle sessions, articles, and many-to-many tag relationships.
+- **AI Integration**: A dedicated Service Layer integrating **Google Gemini** for real-time content enrichment.
 
-### 🍱 User-Centric Dashboard
-*   **Role-Based Access**: Secure CRUD operations protected by JWT-based session tokens.
-*   **Private Workspace**: A dedicated dashboard for authors to manage their contributions with real-time synchronization.
-*   **Ownership Integrity**: Server-side verification ensures that only the rightful owner can modify or delete their technical insights.
+### Key Design Decisions
+1.  **Native Gemini SDK Integration**: Switched from generic OpenAI wrappers to the native `@google/generative-ai` SDK to ensure 100% stability and access to low-latency Flash models.
+2.  **Stateless JWT Authentication**: Implemented secure JSON Web Tokens for session management, stored in local storage with automatic request injection via Axios interceptors.
+3.  **Ownership Verification Middleware**: Custom server-side guards ensure that while anyone can read, only the original author or an admin can modify/delete content.
+4.  **Premium UX/UI**: Prioritized a high-contrast dark theme with glassmorphism effects and inline AI feedback loops instead of intrusive dialogs.
 
-### 🎨 Production-Grade UI/UX
-*   **Executive Dark Theme**: Designed for visual comfort and focus, featuring glassmorphism elements, vibrant blue gradients, and responsive layouts.
-*   **Rich Text Editor**: Integrated `React Quill` for a professional, "What-You-See-Is-What-You-Get" writing experience.
-
----
-
-## 🏗️ Technical Architecture
-
-The platform is built on a modular **MVC (Model-View-Controller)** architecture to ensure scalability and maintainability.
-
-```mermaid
-graph TD
-    User((Developer)) <--> FE[React SPA - Vite]
-    FE <--> BE[Express API - Node.js]
-    BE <--> DB[(MySQL - Relational)]
-    BE <--> AI[OpenAI / Service Layer]
-```
-
-### 🛠️ Core Tech Stack
-| Tier | Technology Used |
-| :--- | :--- |
-| **Frontend** | React 18, Vite, Context API, Axios, React Quill |
-| **Backend** | Node.js, Express.js |
-| **Database** | MySQL (Normalized Schema) |
-| **Auth** | JWT (JSON Web Tokens), Bcrypt.js |
-| **Styling** | Vanilla CSS (Premium Custom Design System) |
-
----
-
-## 📂 Project Structure
-
+### 📂 Folder Structure
 ```text
-├── backend/                # Server-side logic (MVC Pattern)
-│   ├── controllers/        # Request handlers
-│   ├── models/             # Direct DB interactions
-│   ├── routes/             # API endpoint definitions
-│   ├── services/           # External AI service integration
-│   └── config/             # Database & Security configuration
-├── frontend/               # Client-side application
-│   ├── src/pages/          # Main view components
-│   ├── src/components/     # Reusable UI elements
-│   └── src/context/        # Global state (Auth)
-└── README.md               # Main Documentation
+├── backend/                # Server-side logic
+│   ├── config/             # DB & Environment setup
+│   ├── controllers/        # Business logic & request handling
+│   ├── middleware/         # Auth, Uploads, Error guards
+│   ├── models/             # Database abstractions (Raw SQL + mysql2)
+│   ├── routes/             # API Endpoint definitions
+│   └── services/           # AI Logic (Gemini Native SDK)
+├── frontend/               # Client-side logic
+│   ├── src/context/        # Global State (AuthContext)
+│   ├── src/pages/          # Main Views (Dashboard, Editor, Detail)
+│   ├── src/components/     # UI Parts (Navbar, ProtectedRoutes)
+│   └── src/services/       # API interaction layer (Axios)
+└── README.md               # Root Documentation
 ```
+
+---
+
+## 🤖 2. AI Usage (Mandatory)
+
+This project was developed with a "Human-in-the-loop" AI approach, primarily using **Gemini 2.0 Flash** and **Antigravity (Advanced Agentic AI)**.
+
+### Where AI Helped:
+-   **Code Generation**: Scaffolding the initial Express controllers and the complex `ArticleEditor` state management.
+-   **Refactoring**: Transitioning the AI Service from a failing OpenAI-compatible wrapper to the robust **Native Gemini SDK**.
+-   **SQL Queries**: Designing the normalized table structure for articles and the junction table for tags to prevent data duplication.
+-   **API Design**: Structuring the RESTful endpoints for the AI assistant and ensuring consistent JSON response formats.
+-   **UI Ideas**: Implementing the **AI Preview Panel** (inline confirmation) and choosing the modern Indigo/Purple dark-mode palette.
+
+### Manual Corrections & Enhancements:
+-   **Safe JSON Parsing**: Manually implemented a robust parser to strip markdown code fences (` ```json `) returned by LLMs that were crashing standard `JSON.parse()` calls.
+-   **Prompt Engineering**: Optimized system instructions for "Improve with AI" to guarantee emoji-rich markdown headings and professional "Pro-Tip" callouts.
+-   **Auth Integrity**: Corrected token expiration handling in the `AuthContext` to ensure smooth user logout transitions.
+
+---
+
+## ✨ Features
+-   **✨ AI Content Improvement**: Enrich your articles with emoji headings and improved flow.
+-   **📝 Auto-Summarization**: Generate catchy 2-sentence teasers for the article feed.
+-   **🏷️ Smart Tagging**: AI suggests 4-6 relevant tags based on your title and category.
+-   **🔐 Secure Auth**: JWT-protected signup/login with Bcrypt password hashing.
+-   **📱 Fully Responsive**: Seamless experience across mobile, tablet, and desktop.
 
 ---
 
 ## 🚀 Getting Started
 
-### 1. Requirements
-*   Node.js (v18+)
-*   MySQL Instance
-*   OpenAI API Key (Optional)
+### Prerequisites
+- Node.js (v18+)
+- MySQL Instance
+- Gemini API Key
 
-### 2. Quick Install
-```bash
-# Clone the repository
-git clone https://github.com/dilipnalage1063/Knowledge-Sharing-Platform-with-AI-Assist.git
-
-# Install Backend & Database
-cd backend && npm install
-node seed.js # Initialize with professional test data
-
-# Install Frontend
-cd ../frontend && npm install
-```
-
-### 3. Run Locally
-```bash
-# Start Backend (on port 5000)
-cd backend && npm start
-
-# Start Frontend (on port 5173)
-cd frontend && npm run dev
-```
+### Installation
+1.  **Clone the Repo**: `git clone https://github.com/dilipnalage1063/Knowledge-Sharing-Platform-with-AI-Assist.git`
+2.  **Backend Setup**: 
+    - `cd backend && npm install`
+    - Configure `.env` with DB and API keys.
+    - Run `node seed.js` to initialize the database.
+3.  **Frontend Setup**:
+    - `cd ../frontend && npm install`
+4.  **Run Development**:
+    - Backend: `npm start`
+    - Frontend: `npm run dev`
 
 ---
-
-## 🔑 Environment Configuration
-Create a `.env` file in the `backend/` directory:
-```env
-DB_HOST=localhost
-DB_USER=root
-DB_PASS=your_password
-DB_NAME=ai_ksp
-JWT_SECRET=production_ready_secret
-OPENAI_API_KEY=your_key_here
-```
-
----
-
-## 👤 Admin Demo Credentials
-For recruiters who wish to explore the dashboard immediately:
-- **Email**: `admin@example.com`
-- **Password**: `Password123!`
-
----
-*Developed for the CDAC AI-KnowledgeBase Assignment — Final Production Release 2026.*
+*Created as part of the AI Knowledge Platform Assignment — 2026.*
