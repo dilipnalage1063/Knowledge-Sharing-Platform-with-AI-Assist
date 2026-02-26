@@ -33,12 +33,12 @@ exports.generateSummary = async (req, res, next) => {
 
 exports.suggestTags = async (req, res, next) => {
     try {
-        const { content } = req.body;
+        const { content, title, category } = req.body;
         if (!content) {
             return res.status(400).json({ success: false, message: "Content is required" });
         }
 
-        const tags = await aiService.suggestTags(content);
+        const tags = await aiService.suggestTags(content, title || '', category || '');
         res.status(200).json({ success: true, tags });
     } catch (error) {
         next(error);

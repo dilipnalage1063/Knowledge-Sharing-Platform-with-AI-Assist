@@ -10,6 +10,7 @@ import Signup from './pages/Signup';
 import ArticleDetail from './pages/ArticleDetail';
 import ArticleEditor from './pages/ArticleEditor';
 import Dashboard from './pages/Dashboard';
+import Profile from './pages/Profile';
 
 function App() {
   return (
@@ -26,7 +27,7 @@ function App() {
 
             {/* Private Routes */}
             <Route
-              path="/create"
+              path="/write"
               element={
                 <ProtectedRoute>
                   <ArticleEditor />
@@ -46,6 +47,14 @@ function App() {
               element={
                 <ProtectedRoute>
                   <Dashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                <ProtectedRoute>
+                  <Profile />
                 </ProtectedRoute>
               }
             />

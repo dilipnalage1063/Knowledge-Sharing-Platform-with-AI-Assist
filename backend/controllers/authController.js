@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/userModel');
+const db = require('../config/db');
 
 /**
  * Register a new user
@@ -78,6 +79,40 @@ exports.login = async (req, res, next) => {
                 role: user.role
             }
         });
+    } catch (error) {
+        next(error);
+    }
+};
+
+/**
+ * Get logged-in user's profile
+ */
+exports.getProfile = async (req, res, next) => {
+    try {
+        const [rows] = await db.execute(
+            'SELECT id, username, email, role, bio, expertise, created_at FROM users WHERE id = ?',
+            [req.user.id]
+        );
+        if (!rows[0]) {
+            return res.status(404).json({ success: false, message: 'User not found' });
+        }
+        res.status(200).json({ success: true, data: rows[0] });
+    } catch (error) {
+        next(error);
+    }
+};
+
+/**
+ * Update logged-in user's profile (bio & expertise)
+ */
+exports.updateProfile = async (req, res, next) => {
+    try {
+        const { bio, expertise } = req.body;
+        await db.execute(
+            'UPDATE users SET bio = ?, expertise = ? WHERE id = ?',
+            [bio || null, expertise || null, req.user.id]
+        );
+        res.status(200).json({ success: true, message: 'Profile updated successfully' });
     } catch (error) {
         next(error);
     }

@@ -39,7 +39,7 @@ const Dashboard = () => {
         <div className="dashboard-page">
             <div className="dashboard-header">
                 <h2>My Dashboard</h2>
-                <Link to="/create" className="btn-primary" style={{ width: 'auto', padding: '10px 20px' }}>
+                <Link to="/write" className="btn-primary" style={{ width: 'auto', padding: '10px 20px' }}>
                     + Write New Article
                 </Link>
             </div>
@@ -82,7 +82,7 @@ const Dashboard = () => {
                 ) : (
                     <div className="empty-state">
                         <p>You haven't written any articles yet.</p>
-                        <Link to="/create" className="btn-link">Write your first article now!</Link>
+                        <Link to="/write" className="btn-link">Write your first article now!</Link>
                     </div>
                 )}
             </div>

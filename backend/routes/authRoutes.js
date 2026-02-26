@@ -7,13 +7,13 @@ const protect = require('../middleware/authMiddleware');
 router.post('/signup', authController.signup);
 router.post('/login', authController.login);
 
-// Protected Route Example
-// This allows a user to get their own profile info based on the token
+// Protected Route - get decoded token info
 router.get('/me', protect, (req, res) => {
-    res.status(200).json({
-        success: true,
-        user: req.user
-    });
+    res.status(200).json({ success: true, user: req.user });
 });
+
+// Protected Profile Routes
+router.get('/profile', protect, authController.getProfile);
+router.put('/profile', protect, authController.updateProfile);
 
 module.exports = router;

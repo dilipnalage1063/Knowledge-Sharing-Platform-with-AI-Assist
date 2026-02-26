@@ -6,51 +6,52 @@ const Home = () => {
     const [articles, setArticles] = useState([]);
     const [loading, setLoading] = useState(true);
     const [search, setSearch] = useState('');
+    const [activeSearch, setActiveSearch] = useState(''); // committed search term
     const [category, setCategory] = useState('');
     const [pagination, setPagination] = useState({ page: 1, total: 0, limit: 10 });
 
-    const categories = ['Technology', 'Programming', 'AI', 'Fullstack', 'General'];
+    const categories = ['Technology', 'Programming', 'AI', 'Backend', 'Frontend', 'DevOps', 'Fullstack', 'General'];
 
     useEffect(() => {
+        const fetchArticles = async () => {
+            setLoading(true);
+            try {
+                const { data } = await api.get('/articles', {
+                    params: {
+                        search: activeSearch,
+                        category,
+                        page: pagination.page,
+                        limit: pagination.limit
+                    }
+                });
+                setArticles(data.data || []);
+                setPagination(prev => ({ ...prev, total: data.total }));
+            } catch (error) {
+                console.error('Error fetching articles:', error);
+                setArticles([]);
+            } finally {
+                setLoading(false);
+            }
+        };
         fetchArticles();
-    }, [category, pagination.page]);
-
-    const fetchArticles = async () => {
-        setLoading(true);
-        try {
-            const { data } = await api.get('/articles', {
-                params: {
-                    search,
-                    category,
-                    page: pagination.page,
-                    limit: pagination.limit
-                }
-            });
-            setArticles(data.data);
-            setPagination(prev => ({ ...prev, total: data.total }));
-        } catch (error) {
-            console.error('Error fetching articles:', error);
-        } finally {
-            setLoading(false);
-        }
-    };
+    }, [category, pagination.page, activeSearch]);
 
     const handleSearch = (e) => {
         e.preventDefault();
         setPagination(prev => ({ ...prev, page: 1 }));
-        fetchArticles();
+        setActiveSearch(search); // commit the search → triggers useEffect
     };
 
     return (
         <div className="home-page">
             <header className="home-header">
-                <h1>AI-KnowledgeHub <span>Unified Support</span></h1>
-                <p>A production-level Knowledge Sharing Platform with AI-assisted intelligence for seamless technical growth.</p>
+                <h1>AI-KnowledgeHub</h1>
+                <p>A Knowledge Sharing Platform with AI-assisted features for technical learning and collaboration.</p>
 
                 <form onSubmit={handleSearch} className="search-bar">
                     <input
                         type="text"
-                        placeholder="Search by title or content..."
+                        placeholder="Search by title, author name, or category..."
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
                     />

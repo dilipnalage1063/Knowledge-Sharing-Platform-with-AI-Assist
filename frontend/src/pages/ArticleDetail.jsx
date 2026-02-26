@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
+import DOMPurify from 'dompurify';
 import api from '../services/api';
 import { useAuth } from '../context/AuthContext';
 
@@ -14,7 +15,7 @@ const ArticleDetail = () => {
         const fetchArticle = async () => {
             try {
                 const { data } = await api.get(`/articles/${id}`);
-                setArticle(data);
+                setArticle(data.data);
             } catch (error) {
                 console.error('Error fetching article:', error);
             } finally {
@@ -57,7 +58,7 @@ const ArticleDetail = () => {
 
             <main
                 className="article-content ql-editor"
-                dangerouslySetInnerHTML={{ __html: article.content }}
+                dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(article.content) }}
             />
 
             <footer className="article-footer">

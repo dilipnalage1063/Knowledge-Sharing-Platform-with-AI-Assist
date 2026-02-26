@@ -79,10 +79,10 @@ const Article = {
             queryParams.push(category);
         }
 
-        // 2. Search by Title or Content
+        // 2. Search by Title, Content, Category, or Author Name
         if (search) {
-            whereClauses.push('(a.title LIKE ? OR a.content LIKE ?)');
-            queryParams.push(`%${search}%`, `%${search}%`);
+            whereClauses.push('(a.title LIKE ? OR a.content LIKE ? OR a.category LIKE ? OR u.username LIKE ?)');
+            queryParams.push(`%${search}%`, `%${search}%`, `%${search}%`, `%${search}%`);
         }
 
         // 3. Filter by Tag
@@ -97,8 +97,8 @@ const Article = {
 
         query += ' GROUP BY a.id ORDER BY a.created_at DESC';
 
-        // Prepare Count Query
-        let countQuery = 'SELECT COUNT(DISTINCT a.id) as total FROM articles a LEFT JOIN article_tags at ON a.id = at.article_id LEFT JOIN tags t ON at.tag_id = t.id';
+        // Prepare Count Query (must also join users for author name search)
+        let countQuery = 'SELECT COUNT(DISTINCT a.id) as total FROM articles a JOIN users u ON a.author_id = u.id LEFT JOIN article_tags at ON a.id = at.article_id LEFT JOIN tags t ON at.tag_id = t.id';
         const countParams = [...queryParams];
         if (whereClauses.length > 0) {
             countQuery += ' WHERE ' + whereClauses.join(' AND ');

@@ -1,37 +1,43 @@
-# Backend - AI KnowledgeBase API
+# ⚙️ KnowledgeHub Backend — Node.js API
 
-The powerhouse of the platform, providing secure authentication, article management, and AI services.
+The **KnowledgeHub Backend** is a robust RESTful API built with **Express.js** and **MySQL**. It serves as the core intelligence engine for the platform, managing secure operations and external AI service integrations.
 
-## 🛠️ Features
-- **MVC Architecture**: Clear separation of routes, controllers, and models.
-- **Structured AI Service**: Handles OpenAI completions with JSON response formatting.
-- **Smart Fallback**: Automatically switches to `mockImproveContent` if no API key is set.
-- **Normalized DB**: Many-to-many relationship for tags using junction tables.
+---
+
+## 🚀 Key Highlights
+- **MVC Architecture**: Strict separation of concerns for maximum maintainability.
+- **Native Gemini Integration**: Direct implementation using the `@google/generative-ai` SDK (Flash 2.0).
+- **Secure by Design**: JWT-based session management and Bcrypt password hashing.
+- **Relational Integrity**: Normalized MySQL schema with junction tables for efficient tagging.
+
+---
+
+## 📂 Architecture & Approach
+The backend is structured around the **Model-View-Controller (MVC)** pattern:
+- **Controllers**: Handles request validation and orchestrates business logic.
+- **Models**: Abstractions for raw SQL queries, ensuring safe data interaction via `mysql2`.
+- **Services**: Specialized layers for external integrations (the AI Service).
+- **Middleware**: Intercepts requests for authentication and centralized error handling across the app.
+
+### 📐 Design Decisions
+1. **Native AI SDK**: Bypassed generic wrappers to use the Google Generative AI SDK directly, enabling `responseMimeType: 'application/json'` for reliable machine-readable output.
+2. **Centralized Error Middleware**: All async errors are caught and piped to a single error handler, ensuring consistent JSON error responses for the frontend.
+3. **Database Normalization**: Used a `article_tags` junction table to allow N-N relationships, essential for a high-performance knowledge platform.
+
+---
 
 ## 📊 Database Schema
-The database uses **InnoDB** with normalized tables:
-- `users`: Auth information and roles.
-- `articles`: Core content, AI summaries, and category.
-- `tags`: Unique tag names.
-- `article_tags`: Junction table linking articles to tags.
+The database uses standard **InnoDB** with the following normalized tables:
+- `users`: Stores user profiles and auth credentials.
+- `articles`: Primary content storage (Title, Category, Summary, Content).
+- `tags`: Unique collection of technical keywords.
+- `article_tags`: Links articles to their respective tags.
 
-## 📡 API Endpoints
+---
 
-### Authentication
-- `POST /api/auth/signup`: Create new account.
-- `POST /api/auth/login`: Get JWT token.
+## 🤖 AI Usage Detail
+- **SQL Engineering**: AI helped generate the initial migration scripts and the multi-table query for filtering articles by tags.
+- **Service Refactoring**: The transition from mock data to real-time Gemini generation was designed by AI to include a **Safe Parse** mechanism that recovers from malformed LLM responses.
 
-### Articles
-- `GET /api/articles`: List all (with search/filter/pagination).
-- `POST /api/articles`: Create (Protected).
-- `GET /api/articles/:id`: Get single details.
-- `PUT /api/articles/:id`: Update (Owner only).
-- `DELETE /api/articles/:id`: Delete (Owner only).
-
-### AI Assistant
-- `POST /api/ai/improve`: Polish title and content.
-- `POST /api/ai/summary`: Generate catchy summary.
-- `POST /api/ai/suggest-tags`: Recommend keywords.
-
-## 🤖 AI Integration
-The `aiService.js` is built to be resilient. It uses GPT-3.5 internally but detects the presence of `OPENAI_API_KEY`. If missing, it provides high-quality mock responses to ensure the frontend still feels "alive" during development.
+---
+*Developed for the AI-KnowledgeBase Project — 2026.*

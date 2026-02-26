@@ -5,11 +5,12 @@ const protect = require('../middleware/authMiddleware');
 
 // Public Routes (Anyone can view articles)
 router.get('/', articleController.getAllArticles);
-router.get('/:id', articleController.getArticleById);
-
-// Protected Routes (Only registered users can create/edit/delete)
+// Protected Routes
 router.get('/my-articles', protect, articleController.getMyArticles);
 router.post('/', protect, articleController.createArticle);
+
+// ID-based Routes
+router.get('/:id', articleController.getArticleById);
 router.put('/:id', protect, articleController.updateArticle);
 router.delete('/:id', protect, articleController.deleteArticle);
 
