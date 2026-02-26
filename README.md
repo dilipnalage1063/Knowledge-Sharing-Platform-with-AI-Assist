@@ -8,6 +8,60 @@
 
 ### Architecture Overview
 The project follows a modular **Monolithic Service Architecture** with a clear separation of concerns:
+
+```mermaid
+graph TB
+    subgraph Frontend ["🎨 Client (React + Vite)"]
+        UI[User Interface]
+        Ctx[Auth Context]
+        Svc[Axios Services]
+    end
+
+    subgraph Backend ["⚙️ Server (Node.js + Express)"]
+        Routes[API Routes]
+        Ctrl[Controllers]
+        Model[Models]
+        AISvc[AI Service Layer]
+    end
+
+    subgraph Database ["📊 Data Storage"]
+        DB[(MySQL)]
+    end
+
+    subgraph External ["🤖 AI Provider"]
+        Gemini[Google Gemini API]
+    end
+
+    UI <--> Ctx
+    UI <--> Svc
+    Svc <--> Routes
+    Routes --> Ctrl
+    Ctrl --> Model
+    Model <--> DB
+    Ctrl --> AISvc
+    AISvc <--> Gemini
+```
+
+### AI System Flow
+Below is the logic flow for the "Improve with AI" feature:
+
+```mermaid
+sequenceDiagram
+    participant User as Author
+    participant FE as Frontend (React)
+    participant BE as Backend (Express)
+    participant AI as Google Gemini API
+
+    User->>FE: Clicks "Improve with AI"
+    FE->>BE: POST /api/ai/improve (content)
+    BE->>AI: generateContent(Prompt + Content)
+    AI-->>BE: Returns Improved Markdown
+    BE-->>FE: Returns { suggestedTitle, improvedContent }
+    FE->>User: Shows Inline Preview Panel
+    User->>FE: Clicks "Apply Changes"
+    FE->>FE: Updates Quill Editor State
+```
+
 - **Client (Frontend)**: A React-based Single Page Application (SPA) utilizing Vite for lightning-fast development and build cycles.
 - **Server (Backend)**: A Node.js/Express API following the **MVC (Model-View-Controller)** pattern.
 - **Database**: Relational MySQL database with a normalized schema to handle sessions, articles, and many-to-many tag relationships.
